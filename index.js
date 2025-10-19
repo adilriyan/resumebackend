@@ -1,33 +1,27 @@
-// Import json-server
-const jsonServer = require('json-server');
+//inport json-server
+const jsonServer = require('json-server')
 
-// Create a server instance
-const rbuilder = jsonServer.create();
+//create server instance
+const rBuilderServer = jsonServer.create()
 
-// Use dataBase.json as your data source
-const route = jsonServer.router('dataBase.json');
+//tell json-server to use db.json as data source
+const router = jsonServer.router('dataBase.json')
 
-// Add useful middleware - includes CORS, logger, and static
-const middleware = jsonServer.defaults();
+//add usefull middleware
+const middleware = jsonServer.defaults()
 
-// ✅ Use middleware BEFORE routes
-rbuilder.use(middleware);
+//tell the server to use router and middleware
+rBuilderServer.use(middleware)
+rBuilderServer.use(router)
 
-// Optional: Explicitly allow all origins (for extra safety)
-rbuilder.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
 
-// Use your routes
-rbuilder.use(route);
+//set the port, if locally running use port 3000
+const PORT = process.env.PORT || 3000
 
-// Dynamically choose port (Render sets process.env.PORT)
-const PORT = process.env.PORT || 3000;
+//define the port in which server has to run
+rBuilderServer.listen(PORT, ()=>{
+    console.log(`rbServer running at port ${PORT} and waiting for client request...`);
+    
+})
 
-// Start server
-rbuilder.listen(PORT, () => {
-  console.log(`✅ Server running at port ${PORT} and waiting for requests`);
-});
+//in package.json, in scripts change test to, "start": "node index.js"
